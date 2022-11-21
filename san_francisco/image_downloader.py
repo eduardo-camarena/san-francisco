@@ -5,7 +5,7 @@ import typer
 app = typer.Typer()
 
 @app.command()
-def download(
+def download_images(
   base_url: str,
   last: int,
   to: str,
