@@ -15,12 +15,12 @@ def download_images(
   zeroes: int = 0,
   query: str = ''
 ):
+  query = '' if query == '' else f'?{query}'
   for i in range(first, last):
-    filler = '0' * zeroes
+    filler = '0' * (zeroes + 1 - len(f'{i + 1}'))
     picture_number = f'{filler}{i + 1}'
 
     request_extension = extension if add_extension else '';
-    query = '' if query == '' else f'?{query}'
     request_url = f'{base_url}{picture_number}{request_extension}{query}'
   
     print(request_url)
