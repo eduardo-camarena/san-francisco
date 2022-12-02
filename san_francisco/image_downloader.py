@@ -1,7 +1,9 @@
+import os
 import requests
 import shutil
 import typer
 from progress.bar import Bar
+from dotenv import load_dotenv
 
 app = typer.Typer()
 
@@ -17,6 +19,7 @@ def download_images(
   query: str = '',
   name: str = ''
 ):
+  save_path = f"{os.environ.get('BASE_PATH')}/{save_to}" if os.environ.get('BASE_PATH') else f'/{save_to}'
   query = '' if query == '' else f'?{query}'
   with Bar('Downloading', max=last - first) as bar:
     for i in range(first, last):
@@ -30,7 +33,7 @@ def download_images(
 
       picture_name = f'{name} ({i + 1})' if name else f'{i + 1}'
       if r.status_code == 200:
-        with open(f'{save_to}/{picture_name}{extension}', 'wb') as f:
+        with open(f'{save_path}/{picture_name}{extension}', 'wb') as f:
           r.raw.decode_content = True
           shutil.copyfileobj(r.raw, f)
 
@@ -38,4 +41,5 @@ def download_images(
 
 
 def main():
+  load_dotenv()
   app()
