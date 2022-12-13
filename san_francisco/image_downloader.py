@@ -17,7 +17,8 @@ def download_images(
   add_extension: bool = False,
   zeroes: int = 0,
   query: str = '',
-  name: str = ''
+  name: str = '',
+  add: int = 0
 ):
   save_path = f"{os.environ.get('BASE_PATH')}/{save_to}" if os.environ.get('BASE_PATH') else f'/{save_to}'
   query = '' if query == '' else f'?{query}'
@@ -31,7 +32,7 @@ def download_images(
 
       r = requests.get(request_url, stream=True)
 
-      picture_name = f'{name} ({i + 1})' if name else f'{i + 1}'
+      picture_name = f'{name} ({i - first + add + 1})' if name else f'{i - first + add + 1}'
       if r.status_code == 200:
         with open(f'{save_path}/{picture_name}{extension}', 'wb') as f:
           r.raw.decode_content = True
